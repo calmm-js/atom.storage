@@ -77,6 +77,23 @@ The `debounce`, if specified, is the debounce period, in milliseconds, to use
 for storing values.  If not specified, values are stored immediately.  Note that
 `debounce: 0` is different from no debounce.
 
+### Expiring
+
+The named export
+
+```js
+import {expireNow} from "atom.storage"
+```
+
+is a function that takes a `{storage, regex}` argument object.  If then goes
+through items in the `storage`, whose keys match the given `regex`, and removes
+items that have expired.  You typically call `expireNow` once immediately or
+shortly after your app starts.  For example:
+
+```js
+expireNow({storage: localStorage, regex: /^my-unique-app-prefix:/})
+```
+
 ### Combining with Undo
 
 `Stored` directly returns the object it constructs with `Atom`.  This means that
