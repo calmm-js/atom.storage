@@ -56,7 +56,7 @@ for the stored atom.
 The full argument object to `Stored` can be described as follows:
 
 ```js
-{key: string,
+{key: String,
  value: JSON,
  Atom: JSON => AbstractMutable,
  storage: Storage,
