@@ -45,14 +45,14 @@ describe("storage", () => {
 
   testEq('{var y = Stored({key: "test:y", value: "a", time: 10});' +
          ' y.set("b");' +
-         ' return Kefir.later(30).flatMap(() => {' +
+         ' return Kefir.later(100).flatMap(() => {' +
          ' expire();' +
          ' return Stored({key: "test:y", value: "c", time: 10}) })}',
          "c")
 
-  testEq('{var y = Stored({key: "test:y", value: "a", time: 60});' +
+  testEq('{var y = Stored({key: "test:y", value: "a", time: 100});' +
          ' y.set("b");' +
-         ' return Kefir.later(30).flatMap(() => {' +
+         ' return Kefir.later(10).flatMap(() => {' +
          ' expire();' +
          ' return Stored({key: "test:y", value: "c", time: 10}) })}',
          "b")
