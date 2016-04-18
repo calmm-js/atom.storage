@@ -42,7 +42,7 @@ describe("storage", () => {
 
   testEq('{var x1 = Stored({key: "test:x", value: 10});' +
          ' x1.set(101);' +
-         ' var x2 = Stored({key: "test:x", value: 21});' +
+         ' var x2 = Stored({key: "test:x", value: 10});' +
          ' return Kefir.combine([x1, Kefir.constant(x1 === x2), x2]);}',
          [101, true, 101])
 
@@ -57,6 +57,6 @@ describe("storage", () => {
          ' z.set("b");' +
          ' return Kefir.later(10).flatMap(() => {' +
          ' expire();' +
-         ' return Stored({key: "test:z", value: "c", time: 10}) })}',
+         ' return Stored({key: "test:z", value: "a", time: 1000}) })}',
          "b")
 })
