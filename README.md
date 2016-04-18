@@ -54,6 +54,27 @@ Note that when a stored atom is created, the (default) value is not stored.  The
 value is stored only after a `modify` method call that actually results in a new
 value for the stored atom.
 
+### Sharing
+
+When two (or more) stored atoms are created with the same storage and key, the
+implementation only actually creates an atom on the first call.  This means that
+in
+
+```js
+const stored1 = Stored({key: "my-stored-model",
+                        value: defaultValue,
+                        Atom,
+                        storage: localStorage})
+
+const stored2 = Stored({key: "my-stored-model",
+                        value: defaultValue,
+                        Atom,
+                        storage: localStorage})
+```
+
+the objects `stored1` and `stored2` are the one and same object and `stored1 ===
+stored2` is `true`.
+
 ### Full options
 
 The full argument object to `Stored` can be described as follows:
@@ -99,9 +120,10 @@ expireNow({storage: localStorage, regex: /^my-unique-app-prefix:/})
 
 ### Combining with Undo
 
-`Stored` directly returns the object it constructs with `Atom`.  This means that
-you can combine `Stored` with more complex ways to create atoms.  In particular,
-you can combine `Stored` with `Undo` from
+Even though `Stored` [shares atoms with the same storage and key](#sharing),
+`Stored` directly returns the shared object it constructs with `Atom`.  This
+means that you can combine `Stored` with more complex ways to create atoms.  In
+particular, you can combine `Stored` with `Undo` from
 [`atom.undo`](https://github.com/calmm-js/atom.undo).  You can decide whether
 you create an `Undo` atom with `Stored`:
 
