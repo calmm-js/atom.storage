@@ -36,7 +36,7 @@ the `Stored` constructor.  For example:
 
 ```js
 const stored = Stored({key: "my-stored-model",
-                       value: default,
+                       value: defaultValue,
                        Atom,
                        storage: localStorage})
 ```
