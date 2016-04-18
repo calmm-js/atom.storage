@@ -16,8 +16,8 @@ or
 import Atom from "kefir.atom"
 ```
 
-for example.  See [Bacon.Atom](https://github.com/calmm-js/bacon.atom) and
-[Kefir.Atom](https://github.com/calmm-js/kefir.atom) for details.
+for example.  See [`bacon.atom`](https://github.com/calmm-js/bacon.atom) and
+[`kefir.atom`](https://github.com/calmm-js/kefir.atom) for details.
 
 The default import
 
@@ -48,8 +48,8 @@ The value of the atom is converted to a string by calling
 [`JSON.stringify`](https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Global_Objects/JSON/stringify).
 
 Note that when a stored atom is created, the (default) value is not stored.  The
-value is stored only after a `.modify` call that actually results in a new value
-for the stored atom.
+value is stored only after a `modify` method call that actually results in a new
+value for the stored atom.
 
 ### Full options
 
@@ -99,8 +99,8 @@ expireNow({storage: localStorage, regex: /^my-unique-app-prefix:/})
 `Stored` directly returns the object it constructs with `Atom`.  This means that
 you can combine `Stored` with more complex ways to create atoms.  In particular,
 you can combine `Stored` with `Undo` from
-[Atom.Undo](https://github.com/calmm-js/atom.undo).  You can decide whether you
-create an `Undo` atom with `Stored`:
+[`atom.undo`](https://github.com/calmm-js/atom.undo).  You can decide whether
+you create an `Undo` atom with `Stored`:
 
 ```js
 const storesFullHistory =
