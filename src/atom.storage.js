@@ -1,3 +1,12 @@
+const storages = new WeakMap()
+
+const getAtoms = storage => {
+  let atoms = storages.get(storage)
+  if (!atoms)
+    storages.set(storage, atoms = {})
+  return atoms
+}
+
 const tryParse = json => {
   try {
     return JSON.parse(json)
@@ -24,9 +33,10 @@ const getValue = (storage, key, schema, value) => {
   return data.value
 }
 
-export const expireNow = ({storage, regex}) => {
+export const expireNow = ({storage, regex, unsafeDeleteAtoms}) => {
   for (let i=0; i<storage.length; ++i) {
     const key = storage.key(i)
+
     if (!regex.test(key))
       continue
 
@@ -34,8 +44,14 @@ export const expireNow = ({storage, regex}) => {
     if (!seemsValid(data))
       continue
 
-    if (data.expires <= Date.now())
+    if (data.expires <= Date.now()) {
       storage.removeItem(key)
+
+      if (unsafeDeleteAtoms) {
+        const atoms = getAtoms(storage)
+        delete atoms[key]
+      }
+    }
   }
 }
 
@@ -46,23 +62,28 @@ export default ({key,
                  time,
                  schema,
                  debounce}) => {
-  const atom = Atom(getValue(storage, key, schema, value))
+  const atoms = getAtoms(storage)
 
-  let changes = atom.changes()
-  if (0 <= debounce)
-    changes = changes.debounce(debounce)
+  let atom = atoms[key]
+  if (!atom) {
+    atoms[key] = atom = Atom(getValue(storage, key, schema, value))
 
-  changes.onValue(value => {
-    const data = {value}
+    let changes = atom.changes()
+    if (0 <= debounce)
+      changes = changes.debounce(debounce)
 
-    if (schema !== undefined)
-      data.schema = schema
+    changes.onValue(value => {
+      const data = {value}
 
-    if (0 <= time)
-      data.expires = time + Date.now()
+      if (schema !== undefined)
+        data.schema = schema
 
-    storage.setItem(key, JSON.stringify(data))
-  })
+      if (0 <= time)
+        data.expires = time + Date.now()
+
+      storage.setItem(key, JSON.stringify(data))
+    })
+  }
 
   return atom
 }

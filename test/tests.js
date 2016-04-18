@@ -1,13 +1,16 @@
 import Atom           from "kefir.atom"
-import R              from "ramda"
+import * as R         from "ramda"
 import {LocalStorage} from "node-localstorage"
-import Kefir          from "kefir"
+import * as Kefir     from "kefir"
 
 const localStorage = new LocalStorage("./test-storage~")
 
 import AtomStorage, {expireNow} from "../src/atom.storage"
 
-const expire = () => expireNow({storage: localStorage, regex: /^test:/})
+const expire = () =>
+  expireNow({unsafeDeleteAtoms: true, // NOTE: This option is not used typically.
+             storage: localStorage,
+             regex: /^test:/})
 
 const Stored = props => AtomStorage({Atom, storage: localStorage, ...props})
 
@@ -40,8 +43,8 @@ describe("storage", () => {
   testEq('{var x1 = Stored({key: "test:x", value: 10});' +
          ' x1.set(101);' +
          ' var x2 = Stored({key: "test:x", value: 21});' +
-         ' return x2;}',
-         101)
+         ' return Kefir.combine([x1, Kefir.constant(x1 === x2), x2]);}',
+         [101, true, 101])
 
   testEq('{var y = Stored({key: "test:y", value: "a", time: 10});' +
          ' y.set("b");' +
@@ -50,10 +53,10 @@ describe("storage", () => {
          ' return Stored({key: "test:y", value: "c", time: 10}) })}',
          "c")
 
-  testEq('{var y = Stored({key: "test:y", value: "a", time: 100});' +
-         ' y.set("b");' +
+  testEq('{var z = Stored({key: "test:z", value: "a", time: 1000});' +
+         ' z.set("b");' +
          ' return Kefir.later(10).flatMap(() => {' +
          ' expire();' +
-         ' return Stored({key: "test:y", value: "c", time: 10}) })}',
+         ' return Stored({key: "test:z", value: "c", time: 10}) })}',
          "b")
 })
