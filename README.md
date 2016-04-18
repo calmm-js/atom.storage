@@ -85,7 +85,7 @@ The named export
 import {expireNow} from "atom.storage"
 ```
 
-is a function that takes a `{storage, regex}` argument object.  If then goes
+is a function that takes a `{storage, regex}` argument object.  `expireNow` goes
 through items in the `storage`, whose keys match the given `regex`, and removes
 items that have expired.  You typically call `expireNow` once immediately or
 shortly after your app starts.  For example:
