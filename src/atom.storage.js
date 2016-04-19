@@ -112,7 +112,7 @@ export default ({key, storage, ...options}) => {
   } else if (process.NODE_ENV !== "production") {
     const oldOptions = usedOptions.get(atom)
     for (const k in options) {
-      if (options[k] !== oldOptions[k])
+      if (!R.equals(options[k], oldOptions[k]))
         throw new Error(`atom.storage: Created two atoms with same storage and key ${show(key)}, but different ${show(k)}: first ${show(oldOptions[k])} and later ${show(options[k])}.`)
     }
   }
