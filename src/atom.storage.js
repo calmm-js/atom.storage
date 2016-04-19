@@ -1,5 +1,15 @@
 import * as R from "ramda"
 
+function show(x) {
+  switch (typeof x) {
+  case "string":
+  case "object":
+    return JSON.stringify(x)
+  default:
+    return `${x}`
+  }
+}
+
 const storages = new WeakMap()
 let usedOptions
 if (process.NODE_ENV !== "production")
@@ -65,16 +75,6 @@ export const expireNow = ({storage, regex, unsafeDeleteAtoms}) => {
       if (unsafeDeleteAtoms)
         unsafeDeleteAtom({storage, key})
     }
-  }
-}
-
-function show(x) {
-  switch (typeof x) {
-  case "string":
-  case "object":
-    return JSON.stringify(x)
-  default:
-    return `${x}`
   }
 }
 
