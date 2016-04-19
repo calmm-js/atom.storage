@@ -1,6 +1,6 @@
 {
   "name": "atom.storage",
-  "version": "0.3.0",
+  "version": "0.3.1",
   "description": "Reactive variables with Storage",
   "main": "lib/atom.storage.js",
   "scripts": {
