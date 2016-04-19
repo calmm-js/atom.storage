@@ -29,7 +29,7 @@ const getValue = (storage, key, schema, defaultValue, time) => {
     return defaultValue
 
   const data = tryParse(json)
-  if (!seemsValid(data) || R.equals(data.schema, schema) || R.equals(data.value, defaultValue)) {
+  if (!seemsValid(data) || !R.equals(data.schema, schema) || R.equals(data.value, defaultValue)) {
     storage.removeItem(key)
     return defaultValue
   }
