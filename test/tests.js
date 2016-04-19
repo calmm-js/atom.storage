@@ -40,11 +40,11 @@ const testEq = (expr, expect) => it(`${expr} => ${show(expect)}`, done => {
 describe("storage", () => {
   localStorage.clear()
 
-  testEq('{var x1 = Stored({key: "test:x", value: 10});' +
-         ' x1.set(101);' +
-         ' var x2 = Stored({key: "test:x", value: 10});' +
+  testEq('{var x1 = Stored({key: "test:x", value: [10]});' +
+         ' x1.set([101]);' +
+         ' var x2 = Stored({key: "test:x", value: [10]});' +
          ' return Kefir.combine([x1, Kefir.constant(x1 === x2), x2]);}',
-         [101, true, 101])
+         [[101], true, [101]])
 
   testEq('{var y = Stored({key: "test:y", value: "a", time: 10});' +
          ' y.set("b");' +
