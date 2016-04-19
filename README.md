@@ -1,7 +1,7 @@
-Minimalistic
-[`Storage`](https://developer.mozilla.org/en-US/docs/Web/API/Storage)
+A [`Storage`](https://developer.mozilla.org/en-US/docs/Web/API/Storage)
 (e.g. [`localStorage`](https://developer.mozilla.org/en-US/docs/Web/API/Window/localStorage))
-implementation for Atoms.
+implementation for Atoms that is designed for persisting non-critical data such
+as selections made by the user over sessions.
 
 [![npm version](https://badge.fury.io/js/atom.storage.svg)](http://badge.fury.io/js/atom.storage) [![Build Status](https://travis-ci.org/calmm-js/atom.storage.svg?branch=master)](https://travis-ci.org/calmm-js/atom.storage) [![](https://david-dm.org/calmm-js/atom.storage.svg)](https://david-dm.org/calmm-js/atom.storage) [![](https://david-dm.org/calmm-js/atom.storage/dev-status.svg)](https://david-dm.org/calmm-js/atom.storage#info=devDependencies) [![Gitter](https://img.shields.io/gitter/room/calmm-js/chat.js.svg?style=flat-square)](https://gitter.im/calmm-js/chat)
 
@@ -38,14 +38,17 @@ the desired `Atom` constructor, and the desired
 the `Stored` constructor.  For example:
 
 ```js
-const stored = Stored({key: "my-stored-model",
+const stored = Stored({key: "my-unique-app-prefix:my-stored-model",
                        value: defaultValue,
                        Atom,
                        storage: localStorage})
 ```
 
-The given default value is only used when the given storage does not already
-contain a value for the given key.
+The default value is used when the storage does not already contain a value for
+the key.  Also, when a stored atom is written to with a value that is
+[equal](http://ramdajs.com/0.21.0/docs/#equals) to the default value, the
+persisted value for the stored atom is removed from the storage.  This avoids
+unnecessary use of storage space.
 
 The value of the atom is converted to a string by calling
 [`JSON.stringify`](https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Global_Objects/JSON/stringify).
@@ -61,12 +64,12 @@ implementation only actually creates an atom on the first call.  This means that
 in
 
 ```js
-const stored1 = Stored({key: "my-stored-model",
+const stored1 = Stored({key: "my-unique-app-prefix:my-stored-model",
                         value: defaultValue,
                         Atom,
                         storage: localStorage})
 
-const stored2 = Stored({key: "my-stored-model",
+const stored2 = Stored({key: "my-unique-app-prefix:my-stored-model",
                         value: defaultValue,
                         Atom,
                         storage: localStorage})
@@ -85,7 +88,7 @@ The full argument object to `Stored` can be described as follows:
  Atom: JSON => AbstractMutable,
  storage: Storage,
  time: Maybe Milliseconds,
- schema: Maybe (Number | Boolean | String | null),
+ schema: Maybe JSON,
  debounce: Maybe Milliseconds}
 ```
 
@@ -93,15 +96,21 @@ The `time`, if specified, is the number of milliseconds after which the value is
 considered to have expired.  If not specified, the value never expires.
 
 The `schema`, if specified, is stored with the value, and checked when a stored
-atom is created.  If the stored `schema` is not equal, as determined by `===`,
-to the given value, then the stored value is ignored and the given default is
-used instead.
+atom is created.  If the stored `schema` is not
+[equal](http://ramdajs.com/0.21.0/docs/#equals) to the given schema, then the
+stored value is removed and the given default is used instead.
 
 The `debounce`, if specified, is the debounce period, in milliseconds, to use
 for storing values.  If not specified, values are stored immediately.  Note that
 `debounce: 0` is different from no debounce.
 
 ### Expiring
+
+When a value is persisted to storage, the expiration time is set to `time +
+Date.now()`.  Also, when a stored atom with a particular key is first created
+(e.g. when the application is started), the expiration time is updated to
+`time + Date.now()`.  This way a value is kept alive as long as it is being
+used.
 
 The named export
 
@@ -117,6 +126,8 @@ shortly after your app starts.  For example:
 ```js
 expireNow({storage: localStorage, regex: /^my-unique-app-prefix:/})
 ```
+
+Note the use of `^` in the above regex.
 
 ### Combining with Undo
 

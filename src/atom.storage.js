@@ -1,3 +1,5 @@
+import * as R from "ramda"
+
 const storages = new WeakMap()
 let usedOptions
 if (process.NODE_ENV !== "production")
@@ -21,17 +23,22 @@ const tryParse = json => {
 const seemsValid =
   data => data && data.constructor === Object && "value" in data
 
-const getValue = (storage, key, schema, value) => {
+const getValue = (storage, key, schema, defaultValue, time) => {
   const json = storage.getItem(key)
   if (!json)
-    return value
+    return defaultValue
 
   const data = tryParse(json)
-  if (!seemsValid(data))
-    return value
+  if (!seemsValid(data) || R.equals(data.schema, schema) || R.equals(data.value, defaultValue)) {
+    storage.removeItem(key)
+    return defaultValue
+  }
 
-  if (data.schema !== schema)
-    return value
+  if (0 <= time) {
+    data.expires = time + Date.now()
+
+    storage.setItem(key, JSON.stringify(data))
+  }
 
   return data.value
 }
@@ -72,13 +79,13 @@ function show(x) {
 }
 
 export default ({key, storage, ...options}) => {
-  const {value, Atom, time, schema, debounce} = options
+  const {value: defaultValue, Atom, time, schema, debounce} = options
 
   const atoms = getAtoms(storage)
 
   let atom = atoms[key]
   if (!atom) {
-    atoms[key] = atom = Atom(getValue(storage, key, schema, value))
+    atoms[key] = atom = Atom(getValue(storage, key, schema, defaultValue, time))
 
     if (process.NODE_ENV !== "production")
       usedOptions.set(atom, options)
@@ -88,15 +95,19 @@ export default ({key, storage, ...options}) => {
       changes = changes.debounce(debounce)
 
     changes.onValue(value => {
-      const data = {value}
+      if (R.equals(value, defaultValue)) {
+        storage.removeItem(key)
+      } else {
+        const data = {value}
 
-      if (schema !== undefined)
-        data.schema = schema
+        if (schema !== undefined)
+          data.schema = schema
 
-      if (0 <= time)
-        data.expires = time + Date.now()
+        if (0 <= time)
+          data.expires = time + Date.now()
 
-      storage.setItem(key, JSON.stringify(data))
+        storage.setItem(key, JSON.stringify(data))
+      }
     })
   } else if (process.NODE_ENV !== "production") {
     const oldOptions = usedOptions.get(atom)
