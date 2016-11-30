@@ -1,7 +1,7 @@
-import Atom           from "kefir.atom"
 import * as I         from "infestines"
-import {LocalStorage} from "node-localstorage"
 import * as Kefir     from "kefir"
+import Atom           from "kefir.atom"
+import {LocalStorage} from "node-localstorage"
 
 const localStorage = new LocalStorage("./test-storage~")
 
