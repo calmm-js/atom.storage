@@ -1,6 +1,6 @@
 {
   "name": "atom.storage",
-  "version": "0.3.4",
+  "version": "0.4.0",
   "description": "Reactive variables with Storage",
   "main": "lib/atom.storage.js",
   "scripts": {
@@ -23,20 +23,20 @@
   },
   "homepage": "https://github.com/calmm-js/atom.storage#readme",
   "dependencies": {
-    "ramda": ">=0.20.1 <0.23.0"
+    "infestines": "^0.1.1"
   },
   "devDependencies": {
     "babel-cli": "^6.18.0",
-    "babel-eslint": "^7.1.0",
+    "babel-eslint": "^7.1.1",
     "babel-plugin-transform-es2015-modules-commonjs": "^6.18.0",
     "babel-preset-es2015": "^6.18.0",
     "babel-preset-stage-2": "^6.18.0",
     "babel-register": "^6.18.0",
-    "eslint": "^3.10.0",
-    "kefir": "^3.6.0",
+    "eslint": "^3.11.1",
+    "kefir": "^3.6.1",
     "kefir.atom": "^4.0.1",
-    "mocha": "^3.1.2",
+    "mocha": "^3.2.0",
     "node-localstorage": "^1.3.0",
-    "nyc": "^8.4.0"
+    "nyc": "^10.0.0"
   }
 }

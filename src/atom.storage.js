@@ -1,4 +1,4 @@
-import * as R from "ramda"
+import * as I from "infestines"
 
 function show(x) {
   switch (typeof x) {
@@ -39,7 +39,9 @@ const getValue = (storage, key, schema, defaultValue, time) => {
     return defaultValue
 
   const data = tryParse(json)
-  if (!seemsValid(data) || !R.equals(data.schema, schema) || R.equals(data.value, defaultValue)) {
+  if (!seemsValid(data) ||
+      !I.acyclicEqualsU(data.schema, schema) ||
+      I.acyclicEqualsU(data.value, defaultValue)) {
     storage.removeItem(key)
     return defaultValue
   }
@@ -95,7 +97,7 @@ export default ({key, storage, ...options}) => {
       changes = changes.debounce(debounce)
 
     changes.onValue(value => {
-      if (R.equals(value, defaultValue)) {
+      if (I.acyclicEqualsU(value, defaultValue)) {
         storage.removeItem(key)
       } else {
         const data = {value}
@@ -112,7 +114,7 @@ export default ({key, storage, ...options}) => {
   } else if (process.NODE_ENV !== "production") {
     const oldOptions = usedOptions.get(atom)
     for (const k in options) {
-      if (!R.equals(options[k], oldOptions[k]))
+      if (!I.acyclicEqualsU(options[k], oldOptions[k]))
         throw new Error(`atom.storage: Created two atoms with same storage and key ${show(key)}, but different ${show(k)}: first ${show(oldOptions[k])} and later ${show(options[k])}.`)
     }
   }

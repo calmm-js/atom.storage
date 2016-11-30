@@ -1,5 +1,5 @@
 import Atom           from "kefir.atom"
-import * as R         from "ramda"
+import * as I         from "infestines"
 import {LocalStorage} from "node-localstorage"
 import * as Kefir     from "kefir"
 
@@ -27,7 +27,7 @@ function show(x) {
 const testEq = (expr, expect) => it(`${expr} => ${show(expect)}`, done => {
   const actual = eval(`(Stored, Kefir, expire) => ${expr}`)(Stored, Kefir, expire)
   const check = actual => {
-    if (!R.equals(actual, expect))
+    if (!I.acyclicEqualsU(actual, expect))
       throw new Error(`Expected: ${show(expect)}, actual: ${show(actual)}`)
     done()
   }
