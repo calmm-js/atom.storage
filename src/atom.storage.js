@@ -1,14 +1,4 @@
-import * as I from "infestines"
-
-function show(x) {
-  switch (typeof x) {
-  case "string":
-  case "object":
-    return JSON.stringify(x)
-  default:
-    return `${x}`
-  }
-}
+import {acyclicEqualsU} from "infestines"
 
 const storages = new WeakMap()
 let usedOptions
@@ -40,8 +30,8 @@ const getValue = (storage, key, schema, defaultValue, time) => {
 
   const data = tryParse(json)
   if (!seemsValid(data) ||
-      !I.acyclicEqualsU(data.schema, schema) ||
-      I.acyclicEqualsU(data.value, defaultValue)) {
+      !acyclicEqualsU(data.schema, schema) ||
+      acyclicEqualsU(data.value, defaultValue)) {
     storage.removeItem(key)
     return defaultValue
   }
@@ -97,7 +87,7 @@ export default ({key, storage, ...options}) => {
       changes = changes.debounce(debounce)
 
     changes.onValue(value => {
-      if (I.acyclicEqualsU(value, defaultValue)) {
+      if (acyclicEqualsU(value, defaultValue)) {
         storage.removeItem(key)
       } else {
         const data = {value}
@@ -113,10 +103,9 @@ export default ({key, storage, ...options}) => {
     })
   } else if (process.NODE_ENV !== "production") {
     const oldOptions = usedOptions.get(atom)
-    for (const k in options) {
-      if (!I.acyclicEqualsU(options[k], oldOptions[k]))
-        throw new Error(`atom.storage: Created two atoms with same storage and key ${show(key)}, but different ${show(k)}: first ${show(oldOptions[k])} and later ${show(options[k])}.`)
-    }
+    for (const k in options)
+      if (!acyclicEqualsU(options[k], oldOptions[k]))
+        throw new Error(`atom.storage: Created two atoms with same storage and key ${JSON.stringify(key)}, but different ${JSON.stringify(k)}: first ${JSON.stringify(oldOptions[k])} and later ${JSON.stringify(options[k])}.`)
   }
 
   return atom
