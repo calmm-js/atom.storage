@@ -1,6 +1,6 @@
 {
   "name": "atom.storage",
-  "version": "0.4.0",
+  "version": "0.4.1",
   "description": "Reactive variables with Storage",
   "main": "lib/atom.storage.js",
   "scripts": {
@@ -23,7 +23,7 @@
   },
   "homepage": "https://github.com/calmm-js/atom.storage#readme",
   "dependencies": {
-    "infestines": "^0.1.1"
+    "infestines": "^0.2.0"
   },
   "devDependencies": {
     "babel-cli": "^6.18.0",
