@@ -2,7 +2,7 @@ import {acyclicEqualsU} from "infestines"
 
 const storages = new WeakMap()
 let usedOptions
-if (process.NODE_ENV !== "production")
+if (process.env.NODE_ENV !== "production")
   usedOptions = new WeakMap()
 
 const getAtoms = storage => {
@@ -79,7 +79,7 @@ export default ({key, storage, ...options}) => {
   if (!atom) {
     atoms[key] = atom = Atom(getValue(storage, key, schema, defaultValue, time))
 
-    if (process.NODE_ENV !== "production")
+    if (process.env.NODE_ENV !== "production")
       usedOptions.set(atom, options)
 
     let changes = atom.changes()
@@ -101,7 +101,7 @@ export default ({key, storage, ...options}) => {
         storage.setItem(key, JSON.stringify(data))
       }
     })
-  } else if (process.NODE_ENV !== "production") {
+  } else if (process.env.NODE_ENV !== "production") {
     const oldOptions = usedOptions.get(atom)
     for (const k in options)
       if (!acyclicEqualsU(options[k], oldOptions[k]))
