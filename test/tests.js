@@ -5,7 +5,7 @@ import {LocalStorage} from "node-localstorage"
 
 const localStorage = new LocalStorage("./test-storage~")
 
-import AtomStorage, {expireNow} from "../src/atom.storage"
+import AtomStorage, {expireNow} from "../dist/atom.storage.cjs"
 
 const expire = () =>
   expireNow({unsafeDeleteAtoms: true, // NOTE: This option is not used typically.
