@@ -2,12 +2,14 @@
   "name": "atom.storage",
   "version": "0.5.2",
   "description": "Reactive variables with Storage",
-  "main": "dist/atom.storage.cjs.js",
   "module": "dist/atom.storage.es.js",
+  "main": "dist/atom.storage.cjs.js",
   "scripts": {
-    "dist": "npm run dist:es & npm run dist:cjs & wait",
+    "dist": "npm run dist:umd & npm run dist:umd.min & npm run dist:es & npm run dist:cjs & wait",
     "dist:cjs": "    NODE_ENV=           rollup -c -n atom.storage -i src/atom.storage.js -f cjs -o dist/atom.storage.cjs.js",
     "dist:es": "     NODE_ENV=           rollup -c -n atom.storage -i src/atom.storage.js -f es  -o dist/atom.storage.es.js",
+    "dist:umd": "    NODE_ENV=dev        rollup -c -n atom.storage -i src/atom.storage.js -f umd -o dist/atom.storage.js",
+    "dist:umd.min": "NODE_ENV=production rollup -c -n atom.storage -i src/atom.storage.js -f umd -o dist/atom.storage.min.js",
     "lint": "eslint src test",
     "prepublish": "npm run lint && npm run dist && npm run test",
     "test": "nyc mocha"
