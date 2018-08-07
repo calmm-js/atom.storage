@@ -18,8 +18,7 @@ const tryParse = json => {
   }
 }
 
-const seemsValid = data =>
-  data && data.constructor === Object && 'value' in data
+const seemsValid = data => !(data instanceof Error) && data && 'value' in data
 
 const getValue = (storage, key, schema, defaultValue, time) => {
   const json = storage.getItem(key)
