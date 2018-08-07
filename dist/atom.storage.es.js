@@ -114,4 +114,4 @@ function Stored(options) {
 }
 
 export default Stored;
-export { unsafeDeleteAtom, expireNow };
+export { unsafeDeleteAtom, expireNow, Stored };

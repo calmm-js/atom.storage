@@ -119,4 +119,5 @@ function Stored(options) {
 
 exports.unsafeDeleteAtom = unsafeDeleteAtom;
 exports.expireNow = expireNow;
+exports.Stored = Stored;
 exports.default = Stored;
