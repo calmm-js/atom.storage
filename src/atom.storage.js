@@ -65,7 +65,7 @@ export const expireNow = ({storage, regex, unsafeDeleteAtoms}) => {
   }
 }
 
-export default ({key, storage, ...options}) => {
+function Stored({key, storage, ...options}) {
   const {value: defaultValue, Atom, time, schema, debounce} = options
 
   const atoms = getAtoms(storage)
@@ -96,7 +96,7 @@ export default ({key, storage, ...options}) => {
     const oldOptions = usedOptions.get(atom)
     for (const k in options)
       if (!acyclicEqualsU(options[k], oldOptions[k]))
-        throw new Error(
+        console.warn(
           `atom.storage: Created two atoms with same storage and key ${JSON.stringify(
             key
           )}, but different ${JSON.stringify(k)}: first ${JSON.stringify(
@@ -107,3 +107,5 @@ export default ({key, storage, ...options}) => {
 
   return atom
 }
+
+export default Stored
