@@ -1,8 +1,7 @@
 import { acyclicEqualsU } from 'infestines';
 
-var storages = new WeakMap();
-var usedOptions = void 0;
-if (process.env.NODE_ENV !== 'production') usedOptions = new WeakMap();
+var storages = /*#__PURE__*/new WeakMap();
+var usedOptions = process.env.NODE_ENV !== 'production' ? /*#__PURE__*/new WeakMap() : undefined;
 
 var getAtoms = function getAtoms(storage) {
   var atoms = storages.get(storage);

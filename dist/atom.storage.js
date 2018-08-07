@@ -4,9 +4,8 @@
   (factory((global.atom = global.atom || {}, global.atom.storage = {}),global.I));
 }(this, (function (exports,infestines) { 'use strict';
 
-  var storages = new WeakMap();
-  var usedOptions = void 0;
-  usedOptions = new WeakMap();
+  var storages = /*#__PURE__*/new WeakMap();
+  var usedOptions = new WeakMap();
 
   var getAtoms = function getAtoms(storage) {
     var atoms = storages.get(storage);

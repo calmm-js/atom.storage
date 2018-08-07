@@ -1,8 +1,8 @@
 import {acyclicEqualsU} from 'infestines'
 
 const storages = new WeakMap()
-let usedOptions
-if (process.env.NODE_ENV !== 'production') usedOptions = new WeakMap()
+const usedOptions =
+  process.env.NODE_ENV !== 'production' ? new WeakMap() : undefined
 
 const getAtoms = storage => {
   let atoms = storages.get(storage)
