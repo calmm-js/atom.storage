@@ -3,7 +3,11 @@ A [`Storage`](https://developer.mozilla.org/en-US/docs/Web/API/Storage)
 implementation for Atoms that is designed for persisting non-critical data such
 as selections made by the user over sessions.
 
-[![npm version](https://badge.fury.io/js/atom.storage.svg)](http://badge.fury.io/js/atom.storage) [![Build Status](https://travis-ci.org/calmm-js/atom.storage.svg?branch=master)](https://travis-ci.org/calmm-js/atom.storage) [![](https://david-dm.org/calmm-js/atom.storage.svg)](https://david-dm.org/calmm-js/atom.storage) [![](https://david-dm.org/calmm-js/atom.storage/dev-status.svg)](https://david-dm.org/calmm-js/atom.storage?type=dev)
+[![npm version](https://badge.fury.io/js/atom.storage.svg)](http://badge.fury.io/js/atom.storage)
+[![Build Status](https://travis-ci.org/calmm-js/atom.storage.svg?branch=master)](https://travis-ci.org/calmm-js/atom.storage)
+[![Code Coverage](https://img.shields.io/codecov/c/github/calmm-js/atom.storage/master.svg)](https://codecov.io/github/calmm-js/atom.storage?branch=master)
+[![](https://david-dm.org/calmm-js/atom.storage.svg)](https://david-dm.org/calmm-js/atom.storage)
+[![](https://david-dm.org/calmm-js/atom.storage/dev-status.svg)](https://david-dm.org/calmm-js/atom.storage?type=dev)
 
 ## Usage
 

@@ -4,7 +4,7 @@ function _objectWithoutProperties(obj, keys) { var target = {}; for (var i in ob
 
 var storages = new WeakMap();
 var usedOptions = void 0;
-if (process.env.NODE_ENV !== "production") usedOptions = new WeakMap();
+if (process.env.NODE_ENV !== 'production') usedOptions = new WeakMap();
 
 var getAtoms = function getAtoms(storage) {
   var atoms = storages.get(storage);
@@ -21,7 +21,7 @@ var tryParse = function tryParse(json) {
 };
 
 var seemsValid = function seemsValid(data) {
-  return data && data.constructor === Object && "value" in data;
+  return data && data.constructor === Object && 'value' in data;
 };
 
 var getValue = function getValue(storage, key, schema, defaultValue, time) {
@@ -75,7 +75,7 @@ var expireNow = function expireNow(_ref2) {
 var atom_storage = (function (_ref3) {
   var key = _ref3.key,
       storage = _ref3.storage,
-      options = _objectWithoutProperties(_ref3, ["key", "storage"]);
+      options = _objectWithoutProperties(_ref3, ['key', 'storage']);
 
   var defaultValue = options.value,
       Atom = options.Atom,
@@ -90,7 +90,7 @@ var atom_storage = (function (_ref3) {
   if (!atom) {
     atoms[key] = atom = Atom(getValue(storage, key, schema, defaultValue, time));
 
-    if (process.env.NODE_ENV !== "production") usedOptions.set(atom, options);
+    if (process.env.NODE_ENV !== 'production') usedOptions.set(atom, options);
 
     var changes = atom.changes();
     if (0 <= debounce) changes = changes.debounce(debounce);
@@ -108,14 +108,15 @@ var atom_storage = (function (_ref3) {
         storage.setItem(key, JSON.stringify(data));
       }
     });
-  } else if (process.env.NODE_ENV !== "production") {
+  } else if (process.env.NODE_ENV !== 'production') {
     var oldOptions = usedOptions.get(atom);
     for (var k in options) {
-      if (!acyclicEqualsU(options[k], oldOptions[k])) throw new Error("atom.storage: Created two atoms with same storage and key " + JSON.stringify(key) + ", but different " + JSON.stringify(k) + ": first " + JSON.stringify(oldOptions[k]) + " and later " + JSON.stringify(options[k]) + ".");
+      if (!acyclicEqualsU(options[k], oldOptions[k])) throw new Error('atom.storage: Created two atoms with same storage and key ' + JSON.stringify(key) + ', but different ' + JSON.stringify(k) + ': first ' + JSON.stringify(oldOptions[k]) + ' and later ' + JSON.stringify(options[k]) + '.');
     }
   }
 
   return atom;
 });
 
-export { unsafeDeleteAtom, expireNow };export default atom_storage;
+export default atom_storage;
+export { unsafeDeleteAtom, expireNow };
