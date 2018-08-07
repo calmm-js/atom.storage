@@ -26,7 +26,7 @@ import Atom from "kefir.atom"
 for example.  See [`bacon.atom`](https://github.com/calmm-js/bacon.atom) and
 [`kefir.atom`](https://github.com/calmm-js/kefir.atom) for details.
 
-The default import
+The default export
 
 ```js
 import Stored from "atom.storage"
