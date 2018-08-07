@@ -65,8 +65,16 @@ export const expireNow = ({storage, regex, unsafeDeleteAtoms}) => {
   }
 }
 
-function Stored({key, storage, ...options}) {
-  const {value: defaultValue, Atom, time, schema, debounce} = options
+function Stored(options) {
+  const {
+    key,
+    storage,
+    value: defaultValue,
+    Atom,
+    time,
+    schema,
+    debounce
+  } = options
 
   const atoms = getAtoms(storage)
 
