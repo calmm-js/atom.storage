@@ -1,6 +1,7 @@
 *~
 .babelrc
 .eslintrc
+.nyc_output
 .prettierrc
 .travis.yml
 bench

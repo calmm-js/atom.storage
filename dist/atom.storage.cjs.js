@@ -4,8 +4,6 @@ Object.defineProperty(exports, '__esModule', { value: true });
 
 var infestines = require('infestines');
 
-function _objectWithoutProperties(obj, keys) { var target = {}; for (var i in obj) { if (keys.indexOf(i) >= 0) continue; if (!Object.prototype.hasOwnProperty.call(obj, i)) continue; target[i] = obj[i]; } return target; }
-
 var storages = new WeakMap();
 var usedOptions = void 0;
 if (process.env.NODE_ENV !== 'production') usedOptions = new WeakMap();
@@ -25,7 +23,7 @@ var tryParse = function tryParse(json) {
 };
 
 var seemsValid = function seemsValid(data) {
-  return data && data.constructor === Object && 'value' in data;
+  return !(data instanceof Error) && data && 'value' in data;
 };
 
 var getValue = function getValue(storage, key, schema, defaultValue, time) {
@@ -76,12 +74,10 @@ var expireNow = function expireNow(_ref2) {
   }
 };
 
-var atom_storage = (function (_ref3) {
-  var key = _ref3.key,
-      storage = _ref3.storage,
-      options = _objectWithoutProperties(_ref3, ['key', 'storage']);
-
-  var defaultValue = options.value,
+function Stored(options) {
+  var key = options.key,
+      storage = options.storage,
+      defaultValue = options.value,
       Atom = options.Atom,
       time = options.time,
       schema = options.schema,
@@ -115,13 +111,13 @@ var atom_storage = (function (_ref3) {
   } else if (process.env.NODE_ENV !== 'production') {
     var oldOptions = usedOptions.get(atom);
     for (var k in options) {
-      if (!infestines.acyclicEqualsU(options[k], oldOptions[k])) throw new Error('atom.storage: Created two atoms with same storage and key ' + JSON.stringify(key) + ', but different ' + JSON.stringify(k) + ': first ' + JSON.stringify(oldOptions[k]) + ' and later ' + JSON.stringify(options[k]) + '.');
+      if (!infestines.acyclicEqualsU(options[k], oldOptions[k])) console.warn('atom.storage: Created two atoms with same storage and key ' + JSON.stringify(key) + ', but different ' + JSON.stringify(k) + ': first ' + JSON.stringify(oldOptions[k]) + ' and later ' + JSON.stringify(options[k]) + '.');
     }
   }
 
   return atom;
-});
+}
 
 exports.unsafeDeleteAtom = unsafeDeleteAtom;
 exports.expireNow = expireNow;
-exports.default = atom_storage;
+exports.default = Stored;
